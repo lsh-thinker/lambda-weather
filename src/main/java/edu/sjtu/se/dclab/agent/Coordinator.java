@@ -1,6 +1,7 @@
 package edu.sjtu.se.dclab.agent;
 
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -12,66 +13,80 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.core.rolling.helper.PeriodicityType;
-import edu.sjtu.se.dclab.entity.City;
-import edu.sjtu.se.dclab.entity.WeatherInfo;
+import edu.sjtu.se.dclab.util.Utils;
 
-public class Coordinator {
-	
-	public static final String HOST = "www.weather.com.cn";
-	public static final String PROTOCAL = "http";
-	public static final String TOPIC = "weather";
-	
+public class Coordinator<T1, T2> {
 	public static final Logger LOG = LoggerFactory.getLogger(Coordinator.class);
 
-	public static final String cityFilePath = "citys.txt";
-	
+	static final ExecutorService executorService = Executors.newFixedThreadPool(3);
 	static final ScheduledExecutorService scheduleService =  Executors.newScheduledThreadPool(3);;
 
-	private String brokerList;
-	
+	private List<RichFetcher<T1>> fetcherList;
+	private List<RichProcessor<T1,T2>> processorList;
+	private List<RichSender<T2>> senderList;
 
 	public Coordinator() {
-		brokerList = "127.0.0.1:9092";
+		fetcherList = new ArrayList<RichFetcher<T1>>();
+		processorList = new ArrayList<RichProcessor<T1, T2>>();
+		senderList = new ArrayList<RichSender<T2>>();
 	}
 	
 	private void init(){
+		Map<String,Object> config = loadConf();
 		
-	}
-
-	public void service() {
-		URL url = Coordinator.class.getClassLoader().getResource(cityFilePath);
-		if (url == null) {
-			throw new RuntimeException("City file not found!");
+		BlockingQueue<T1> queue1 = new LinkedBlockingQueue<T1>();
+		BlockingQueue<T2> queue2 = new LinkedBlockingQueue<T2>(); 
+		
+		for(RichFetcher<T1> fetcher : fetcherList){
+			fetcher.setOutputQueue(queue1);
+			fetcher.setConfig(config);
+			fetcher.init();
 		}
-		LOG.info("City file path:" + url.getPath());
-		
-		CityLoader loader = new FileCityLoader(url.getPath());
-		Map<String, City> citys = loader.load();
-		
-		BlockingQueue<String> jsonQueue = new LinkedBlockingQueue<String>();
-		BlockingQueue<WeatherInfo> kafkaWeatherInfoQueue = new LinkedBlockingQueue<WeatherInfo>(); 
-		BlockingQueue<WeatherInfo> hdfsWeatherInfoQueue = new LinkedBlockingQueue<WeatherInfo>(); 
-		
-		
-		scheduleService.scheduleAtFixedRate(
-				new WeatherFetcher(HOST, PROTOCAL, jsonQueue), 10, 10, TimeUnit.SECONDS);
-		
-		ExecutorService executorService = Executors.newFixedThreadPool(3);
-		executorService.execute(new WeatherProcesser(jsonQueue, kafkaWeatherInfoQueue, 
-				hdfsWeatherInfoQueue));
-		//executorService.execute(new KafkaWeatherSender(TOPIC, brokerList, kafkaWeatherInfoQueue));
-		executorService.execute(new FileWeatherSender("/home/thinker/workspace/", hdfsWeatherInfoQueue, 2, TimeUnit.MINUTES));
-		
-
-		//whetherFetcher = new WeatherFetcher("www.weather.com.cn", "http");
-		//whetherFetcher.getWhetherInfos(new ArrayList<String>(citys.keySet()));
+		for(RichProcessor<T1, T2> processor: processorList){
+			processor.setInputQueue(queue1);
+			processor.setOutputQueue(queue2);
+			processor.setConfig(config);
+			processor.init();
+		}
+		for(RichSender<T2> sender : senderList){
+			sender.setInputQueue(queue2);
+			sender.setConfig(config);
+			sender.init();
+		}
+	}
+	
+	public void launch() {
+		init();
+		service();
+	}
+	
+	private Map<String,Object> loadConf(){
+		return Utils.readLambdaConfig();
 	}
 
-	public static void main(String[] args) {
-
-		new Coordinator().service();
-
+	private void service() {
+		for(RichFetcher<T1> fetcher : fetcherList){
+			scheduleService.scheduleAtFixedRate(
+					fetcher, 10, 10, TimeUnit.SECONDS);
+		}
+		for(RichProcessor<T1, T2> processor: processorList){
+			executorService.execute(processor);
+		}
+		for(RichSender<T2> sender : senderList){
+			executorService.execute(sender);
+		}
+	}
+	
+	public void addFetcher(RichFetcher<T1> fetcher){
+		fetcherList.add(fetcher);
+	}
+	
+	public void addProcessor(RichProcessor<T1,T2> processor){
+		processorList.add(processor);
+	}
+	
+	public void addSender(RichSender<T2> sender){
+		senderList.add(sender);
 	}
 
 }

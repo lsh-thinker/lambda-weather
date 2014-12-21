@@ -1,4 +1,4 @@
-package edu.sjtu.se.dclab.agent;
+package edu.sjtu.se.dclab.weather;
 
 import edu.sjtu.se.dclab.entity.WeatherInfo;
 

@@ -1,4 +1,4 @@
-package edu.sjtu.se.dclab.agent;
+package edu.sjtu.se.dclab.weather;
 
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;

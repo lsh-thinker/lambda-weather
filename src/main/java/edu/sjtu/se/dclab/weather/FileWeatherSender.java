@@ -1,4 +1,4 @@
-package edu.sjtu.se.dclab.agent;
+package edu.sjtu.se.dclab.weather;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,6 +18,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.sjtu.se.dclab.agent.Coordinator;
 import edu.sjtu.se.dclab.entity.WeatherInfo;
 import edu.sjtu.se.dclab.util.FileUtil;
 
@@ -44,8 +45,8 @@ public class FileWeatherSender implements Runnable, WeatherSender {
 		this.weatherInfoQueue = weatherInfoQueue;
 		this.PERIOD = period;
 		this.TIME_UNIT = timeUnit;
-		Coordinator.scheduleService.scheduleAtFixedRate(
-				new CleanRunnable(writerMap), period, period, timeUnit);
+		//Coordinator.scheduleService.scheduleAtFixedRate(
+		//		new CleanRunnable(writerMap), period, period, timeUnit);
 		
 	}
 	
