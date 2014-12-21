@@ -1,0 +1,7 @@
+kafka.broker.list:127.0.0.1:9092
+fetcher.parallelism:10
+processor.parallelism:10
+sender.parallelism:10
+
+
+
