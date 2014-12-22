@@ -3,8 +3,15 @@ package edu.sjtu.se.dclab.entity;
 import java.io.Serializable;
 
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import edu.sjtu.se.dclab.agent.CoordinatorTest;
 
 public class Goods implements Serializable{
+	
+	private static final Logger LOG = LoggerFactory.getLogger(Goods.class);
+	
 	private static final long serialVersionUID = 1L;
 	
 	public static final String GOODS_ID = "goodsId";
@@ -20,7 +27,9 @@ public class Goods implements Serializable{
 	public Goods(JSONObject object){
 		goodsId = String.valueOf(object.get(Goods.GOODS_ID));
 		goodsName = String.valueOf(object.get(Goods.GOODS_NAME));
-		price = Float.valueOf(String.valueOf(object.get(Goods.GOODS_CATEGORY)));
+//		LOG.info(String.valueOf(object.get(PRICE)) + "-------");
+//		/price = Float.valueOf(String.valueOf(object.get(PRICE)));
+		goodsCategory = String.valueOf(object.get(PRICE));
 	}
 	
 	public String getGoodsId() {

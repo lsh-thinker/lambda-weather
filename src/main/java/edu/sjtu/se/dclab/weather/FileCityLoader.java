@@ -1,4 +1,4 @@
-package edu.sjtu.se.dclab.agent;
+package edu.sjtu.se.dclab.weather;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.sjtu.se.dclab.entity.City;
-import edu.sjtu.se.dclab.weather.CityLoader;
 
 public class FileCityLoader implements CityLoader{
 	public static final Logger LOG = LoggerFactory.getLogger(FileCityLoader.class);

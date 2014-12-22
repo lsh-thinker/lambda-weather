@@ -9,6 +9,22 @@
 
 	<name>Lambda</name>
 	<url>http://maven.apache.org</url>
+	
+	   <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>github-releases</id>
+            <url>http://oss.sonatype.org/content/repositories/github-releases/</url>
+        </repository>
+        <repository>
+            <id>clojars.org</id>
+            <url>http://clojars.org/repo</url>
+        </repository>
+
+    </repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -55,6 +71,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        
+	<!-- trident-cassandra -->
+       <dependency>
+          <groupId>trident-cassandra</groupId>
+          <artifactId>trident-cassandra</artifactId>
+          <version>0.0.1-wip2</version>
+       </dependency>
        <!-- date util -->
 	   <dependency>
 		    <groupId>joda-time</groupId>
@@ -85,6 +108,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.apache.storm</groupId>
+            <artifactId>storm-kafka</artifactId>
+            <version>0.9.2-incubating</version>
+        </dependency>
+        
         <!-- splout  -->
 	   <dependency>
 		  <groupId>com.splout.db</groupId>

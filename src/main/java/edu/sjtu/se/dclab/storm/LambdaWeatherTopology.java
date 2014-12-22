@@ -267,6 +267,7 @@ public class LambdaWeatherTopology {
 		conf.setDebug(false);
 
 		// This topology can only be run as local because it is a toy example
+		
 		LocalDRPC drpc = new LocalDRPC();
 		LocalCluster cluster = new LocalCluster();
 		cluster.submitTopology("hashtagCounter", conf, buildTopology(drpc));
