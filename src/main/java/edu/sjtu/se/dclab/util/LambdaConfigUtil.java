@@ -26,4 +26,12 @@ public class LambdaConfigUtil {
 		return String.valueOf(config.get(LambdaConfig.KAFKA_ZOOKEEPER_ROOT));
 	}
 	
+	public static void setCassandraHosts(Map<String, Object> config, String hosts){
+		config.put(LambdaConfig.CASSANDRA_HOSTS, hosts);
+	}
+	
+	public static String getCassandraHosts(Map<String, Object> config){
+		return String.valueOf(config.get(LambdaConfig.CASSANDRA_HOSTS));
+	}
+	
 }

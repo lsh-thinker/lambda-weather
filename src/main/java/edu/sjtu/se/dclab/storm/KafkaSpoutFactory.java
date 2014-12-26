@@ -17,6 +17,7 @@ import storm.trident.spout.IOpaquePartitionedTridentSpout;
 import storm.trident.spout.IPartitionedTridentSpout;
 import backtype.storm.topology.IRichSpout;
 import edu.sjtu.se.dclab.util.LambdaConfigUtil;
+import edu.sjtu.se.dclab.util.Utils;
 
 public class KafkaSpoutFactory implements SpoutFactory {
 	
@@ -26,7 +27,9 @@ public class KafkaSpoutFactory implements SpoutFactory {
 	
 	public static KafkaSpoutFactory instance = new KafkaSpoutFactory();
 	
-	private  KafkaSpoutFactory(){}
+	private KafkaSpoutFactory(){
+		config = Utils.readLambdaConfig();
+	}
 	
 	public static KafkaSpoutFactory newFactory(){
 		return instance;
