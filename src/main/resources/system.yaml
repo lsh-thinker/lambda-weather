@@ -1,7 +1,7 @@
 kafka.broker.list:127.0.0.1:9092
+kafka.zookeeper.root:/kafkastorm
+
+
 fetcher.parallelism:10
 processor.parallelism:10
 sender.parallelism:10
-
-
-

@@ -24,7 +24,7 @@ public class KafkaSender<T2> extends RichSender<T2> {
 	
 	public void init(){
 		Properties props = new Properties();
-		props.put("metadata.broker.list", LambdaConfigUtil.kafkaBrokerList(config));
+		props.put("metadata.broker.list", LambdaConfigUtil.getKafkaBrokerList(config));
 		props.put("serializer.class", "kafka.serializer.StringEncoder");
 		props.put("request.required.acks", "1");
 		

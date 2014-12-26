@@ -18,7 +18,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.sjtu.se.dclab.agent.Coordinator;
+import edu.sjtu.se.dclab.agent.AgentCoordinator;
 import edu.sjtu.se.dclab.entity.WeatherInfo;
 import edu.sjtu.se.dclab.util.FileUtil;
 

@@ -195,8 +195,6 @@ public class LambdaWeatherTopology {
 
 		String now = DAY_FORMAT.print(new Date().getTime());
 		
-//		TransactionalTridentKafkaSpout kafkaSpout = 
-		
 		// This is just a dummy cyclic spout that only emits two tweets
 //		FixedBatchSpout spout = new FixedBatchSpout(new Fields("weatherInfo", "date"), 3, 
 //				new Values("#california is cool", now), 
