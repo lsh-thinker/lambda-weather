@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import edu.sjtu.se.dclab.util.Utils;
 
-public class AgentCoordinator<T1, T2> {
+public class AgentCoordinator<T1, T2> implements Coordinator<T1,T2>{
 	public static final Logger LOG = LoggerFactory.getLogger(AgentCoordinator.class);
 
 	static final ExecutorService executorService = Executors.newFixedThreadPool(3);
